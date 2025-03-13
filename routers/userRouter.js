@@ -148,4 +148,20 @@ userRouter.get('/accessjwt', refreshAuth, async(req, res) => {
   }
 })
 
+//LOGOUT USER
+userRouter.post("/logout", userAuth, async(req, res)=> {
+  try {
+    const { email } = req.body
+    const { authorization } = req.headers
+
+    //remove session for the user
+    await deleteSession({ token: authorization, userEmail: email })
+
+
+    buildSuccessResponse(res, {}, "Bye, See you again!!")
+  } catch (error) {
+    buildErrorResponse(res, error.message)
+  }
+})
+
 export default userRouter
